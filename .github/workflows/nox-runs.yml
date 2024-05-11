@@ -1,0 +1,112 @@
+name: Nox Run
+run-name: ${{ inputs.session }}
+
+on:
+  workflow_call:
+    inputs:
+      session:
+        required: true
+        type: string
+jobs:
+  nox:
+    name: nox ${{ inputs.session }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - { python: "3.12", os: ubuntu-latest }
+    env:
+      NOXSESSION: ${{ inputs.session }}
+      FORCE_COLOR: "1"
+      PRE_COMMIT_COLOR: "always"
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Upgrade pip
+        run: |
+          pip install --upgrade pip
+          pip --version
+
+      - name: Upgrade pip in virtual environments
+        shell: python
+        run: |
+          import os
+          import pip
+
+          with open(os.environ["GITHUB_ENV"], mode="a") as io:
+            print(f"VIRTUALENV_PIP={pip.__version__}", file=io)
+
+      - name: Install Poetry
+        run: |
+          pipx install poetry
+          poetry --version
+
+      - name: Install Nox
+        run: |
+          pipx install nox
+          pipx inject nox nox-poetry
+          nox --version
+
+      # Pre-nox steps
+      # # pre-commit
+      - name: Compute pre-commit cache key
+        if: inputs.session == 'pre-commit'
+        id: pre-commit-cache
+        shell: python
+        run: |
+          import hashlib
+          import sys
+
+          python = "py{}.{}".format(*sys.version_info[:2])
+          payload = sys.version.encode() + sys.executable.encode()
+          digest = hashlib.sha256(payload).hexdigest()
+          result = "${{ runner.os }}-{}-{}-pre-commit".format(python, digest[:8])
+
+          print('"result={}" >> $GITHUB_OUTPUT'.format(result))
+
+      - name: Restore pre-commit cache
+        uses: actions/cache@v3
+        if: inputs.session == 'pre-commit'
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ steps.pre-commit-cache.outputs.result }}-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ steps.pre-commit-cache.outputs.result }}-
+
+      # coverage
+      - name: Download coverage data
+        if: inputs.session == 'coverage'
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage-data
+
+      - name: Run Nox
+        run: |
+          nox --python=${{ matrix.python }}
+
+      # Post-nox steps
+      # docs-build
+      - name: Setup Pages
+        if: inputs.session == 'docs-build' && success()
+        uses: actions/configure-pages@v3
+
+      - name: Upload documentation pages
+        if: inputs.session == 'docs-build' && success()
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ${{ github.workspace }}/site
+
+      # tests
+      - name: Upload coverage data
+        if: inputs.session == 'tests'
+        uses: "actions/upload-artifact@v3"
+        with:
+          name: coverage-data
+          path: ".coverage.*"

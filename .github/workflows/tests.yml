@@ -1,0 +1,29 @@
+name: Review
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  style:
+    uses: ./.github/workflows/nox-runs.yml
+    with:
+      session: ${{ matrix.session }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - session: pre-commit
+          - session: mypy
+          - session: typeguard
+
+  tests:
+    uses: ./.github/workflows/nox-runs.yml
+    with:
+      session: tests
+
+  report:
+    needs: tests
+    uses: ./.github/workflows/nox-runs.yml
+    with:
+      session: coverage

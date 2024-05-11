@@ -1,0 +1,50 @@
+site_name: MJV TODO REST API
+repo_url: https://github.com/snregales/mjv-todo-api
+site_description: Ministerie van Justitie en Veiligheid TODO REST API Assesment
+site_author: Sharlon Regales
+edit_uri: edit/main/docs
+repo_name: snregales/mjv-todo-api
+
+nav:
+  - Home: index.md
+  - usage.md
+  - Reference:
+      - Interface: references/api.md
+
+plugins:
+  - search
+  - mkdocstrings:
+
+theme:
+  name: material
+  font:
+    code: Fira Code
+  features:
+    - tabs: true
+    - navigation.footer
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: red
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - pymdownx.details
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/snregales/mjv-todo-api/issues
+      name: Issue Tracker

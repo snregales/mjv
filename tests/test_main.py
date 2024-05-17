@@ -2,6 +2,7 @@
 
 import pytest
 from click.testing import CliRunner
+
 from mjv_todo_api import __main__
 
 

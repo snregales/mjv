@@ -7,9 +7,8 @@ repo_name: snregales/mjv-todo-api
 
 nav:
   - Home: index.md
-  - usage.md
-  - Reference:
-      - Interface: references/api.md
+  - api.md
+  - Reference: references/index.html
 
 plugins:
   - search

@@ -115,12 +115,7 @@ def precommit(session: Session) -> None:
         "--hook-stage=manual",
         "--show-diff-on-failure",
     ]
-    session.install(
-        "ruff",
-        "pre-commit",
-        "pre-commit-hooks",
-        "pyupgrade",
-    )
+    session.install("ruff", "pre-commit", "pre-commit-hooks", "pyupgrade", "pdoc")
     session.run("pre-commit", *args)
     if args and args[0] == "install":
         activate_virtualenv_in_precommit_hooks(session)
@@ -129,12 +124,10 @@ def precommit(session: Session) -> None:
 @session(python=python_versions)
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
-    args = session.posargs or ["src", "tests"]
     session.install(".")
     session.install("mypy", "pytest")
-    session.run("mypy", *args)
-    if not session.posargs:
-        session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
+    session.run("mypy", *(session.posargs or ["src", "tests"]))
+    session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
 
 
 @session(python=python_versions)
@@ -142,24 +135,19 @@ def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".")
     session.install("coverage[toml]", "pytest", "pygments")
-    try:
-        session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
-    finally:
-        if session.interactive:
-            session.notify("coverage", posargs=[])
+    session.run("coverage", "run", *session.posargs)
+    session.notify("coverage", posargs=["debug", "config"])
 
 
 @session(python=python_versions[0])
 def coverage(session: Session) -> None:
     """Produce the coverage report."""
-    args = session.posargs or ["report"]
-
     session.install("coverage[toml]")
 
-    if not session.posargs and any(Path().glob(".coverage.*")):
+    if not session.posargs and any(Path().glob("reports/.coverage.*")):
         session.run("coverage", "combine")
 
-    session.run("coverage", *args)
+    session.run("coverage", *(session.posargs or ["report"]))
 
 
 @session(python=python_versions[0])

@@ -1,4 +1,4 @@
-"""Command-line interface."""
+"""Project Command-line interface."""
 
 import click
 

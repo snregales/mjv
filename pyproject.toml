@@ -17,6 +17,8 @@ python = "^3.12"
 flask = ">=3.0.3"
 click = ">=8.1.7"
 flask-restx = "^1.3.0"
+flask-sqlalchemy = "^3.1.1"
+environs = "^11.0.0"
 
 [tool.poetry.group.docs.dependencies]  # https://python-poetry.org/docs/master/managing-dependencies/
 pdoc = "*"
@@ -28,6 +30,7 @@ mypy = "*"
 ruff = "*"
 typeguard = "*"
 pytest = "*"
+pytest-click = "*"
 coverage = {extras = ["toml"], version = "*"}
 pre-commit = "*"
 pre-commit-hooks = "*"
@@ -36,7 +39,7 @@ pre-commit-hooks = "*"
 ipykernel = "*"
 
 [tool.poetry.scripts]
-mjv = 'mjv_todo_api.__main__:main'
+mjv = 'mjv_todo_api.__main__:run'
 
 [tool.pytest.ini_options]  # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
 addopts = "--color=yes --failed-first --strict-config --strict-markers --verbosity=2 --junitxml=reports/pytest.xml"
@@ -95,6 +98,10 @@ max-doc-length = 100
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore all files that end in `_test.py`.
+"*_test.py" = ["D"]
 
 [tool.mypy]  # https://mypy.readthedocs.io/en/latest/config_file.html
 junit_xml = "reports/mypy.xml"

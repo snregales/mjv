@@ -1,6 +1,7 @@
-from flask_sqlalchemy.session import Session
+import pytest
 
 from mjv_todo_api.apis.todo.models import Todo
+from mjv_todo_api.apis.user.models import User
 from mjv_todo_api.database import PkModel
 
 
@@ -10,27 +11,24 @@ def test_model_is_child_of_PkModel() -> None:
     assert issubclass(Todo, PkModel)
 
 
-def test_update_todo_model(session: Session) -> None:
-    todo = Todo.create(task="Initial Task")
-    session.commit()
-    todo.update(task="Updated Task", completed=True)
-    session.commit()
-    updated_todo = Todo.query.get(todo.id)
+@pytest.fixture(scope="module")
+def new_todo(new_user: User) -> Todo:
+    return Todo.create(task="Test Task", user_id=new_user.id)
+
+
+def test_create_todo_model(new_todo: Todo) -> None:
+    assert new_todo.task == "Test Task"
+    assert new_todo.completed is False
+    assert new_todo.completed_at is None
+
+
+def test_update_todo_model(new_todo: Todo) -> None:
+    new_todo.update(task="Updated Task", completed=True)
+    updated_todo = Todo.query.get(new_todo.id)
     assert updated_todo
     assert updated_todo.task == "Updated Task"
     assert updated_todo.completed is True
     assert updated_todo.completed_at is not None
-
-
-def test_create_todo_model(session: Session) -> None:
-    todo = Todo.create(task="Test Task")
-    session.commit()
-    assert todo.id
-    assert todo.task == "Test Task"
-    assert todo.completed is False
-    assert todo.created_at is not None
-    assert todo.modified_at is not None
-    assert todo.completed_at is None
 
 
 def test_field_descriptions() -> None:

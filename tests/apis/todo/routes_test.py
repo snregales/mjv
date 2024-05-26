@@ -6,12 +6,12 @@ from flask.testing import FlaskClient
 
 
 @pytest.fixture
-def volitile_todos(client: FlaskClient) -> Iterator[tuple[FlaskClient, int]]:
+def volitile_todos(authenticated_client: FlaskClient) -> Iterator[tuple[FlaskClient, int]]:
     """Populate database with todo that is expected to be mutated."""
-    response = client.post("/todos/", json={"task": "Initial Task"})
+    response = authenticated_client.post("/todos/", json={"task": "Initial Task"})
     todo_id = response.get_json()["id"]
-    yield client, todo_id
-    client.delete(f"/todos/{todo_id}")
+    yield authenticated_client, todo_id
+    authenticated_client.delete(f"/todos/{todo_id}")
 
 
 def test_create_todo(volitile_todos: tuple[FlaskClient, int]) -> None:

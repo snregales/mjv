@@ -22,6 +22,7 @@ class User(PkModel):
     username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(120), unique=True, nullable=False)
     password = Column(db.String(128), nullable=False)
+    todos = db.relationship("Todo", back_populates="user", cascade="all, delete-orphan")
 
     def __str__(self) -> str:
         """User instance string representation."""

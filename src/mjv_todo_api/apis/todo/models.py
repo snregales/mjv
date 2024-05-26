@@ -3,9 +3,9 @@
 from datetime import UTC, datetime
 from typing import Any, Iterable, Self, override
 
-from flask_restx.fields import Boolean, DateTime, String
+from flask_restx.fields import Boolean, DateTime, Integer, String
 
-from mjv_todo_api.database import Column, DataBasePrimitives, PkModel
+from mjv_todo_api.database import Column, DataBasePrimitives, PkModel, reference_col
 from mjv_todo_api.extensions import db
 
 
@@ -15,6 +15,8 @@ class Todo(PkModel):
     task = Column(db.String(80), nullable=False)
     completed = Column(db.Boolean, default=False)
     completed_at = Column(db.DateTime)
+    user_id = reference_col("user", nullable=False)
+    user = db.relationship("User", back_populates="todos")
 
     def __str__(self) -> str:
         """User instance string representation."""
@@ -32,6 +34,10 @@ class Todo(PkModel):
             ("task", String(required=True, description="The task details")),
             ("completed", Boolean(description="Task completion status")),
             ("completed_at", DateTime(description="The completion timestamp")),
+            (
+                "user_id",
+                Integer(readOnly=True, description="The ID of the user who owns the task"),
+            ),
             *super().field_descriptions(),
         )
 

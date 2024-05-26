@@ -38,3 +38,10 @@ def test_delete_model[T: PkModel](create_model: tuple[type[T], T]) -> None:  # t
     model, instance = create_model
     instance.delete()
     assert not model.query.get(instance.id)
+
+
+def test_field_descriptions[T: PkModel](pk_model: type[T]) -> None:  # type: ignore
+    spec = dict(pk_model.field_descriptions())
+    assert "id" in spec
+    assert "created_at" in spec
+    assert "modified_at" in spec

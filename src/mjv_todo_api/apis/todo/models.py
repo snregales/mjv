@@ -1,45 +1,43 @@
 """Todo related models."""
 
 from datetime import UTC, datetime
-from typing import Self, override
+from typing import Any, Iterable, Self, override
 
-from flask_restx import Model, Namespace, OrderedModel, fields
+from flask_restx.fields import Boolean, DateTime, String
 
-from mjv_todo_api.database import DataBasePrimitives, PkModel
+from mjv_todo_api.database import Column, DataBasePrimitives, PkModel
 from mjv_todo_api.extensions import db
 
 
 class Todo(PkModel):
     """Todo ORM model."""
 
-    id = db.Column(db.Integer, primary_key=True)
-    task = db.Column(db.String(80), nullable=False)
-    completed = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.now(UTC))
-    modified_at = db.Column(db.DateTime, default=datetime.now(UTC), onupdate=datetime.now(UTC))
-    completed_at = db.Column(db.DateTime)
+    task = Column(db.String(80), nullable=False)
+    completed = Column(db.Boolean, default=False)
+    completed_at = Column(db.DateTime)
+
+    def __str__(self) -> str:
+        """User instance string representation."""
+        return f"{self.id}: {self.task}"
+
+    def __repr__(self) -> str:
+        """User instance representation."""
+        return f"<{self.__class__.__name__} '{self}'>"
 
     @override
     @classmethod
-    def rest_specification(cls, namespace: Namespace) -> Model | OrderedModel:
-        """REST Swagger Specification."""
-        return namespace.model(
-            cls.__name__,
-            {
-                "id": fields.Integer(readOnly=True, description="The unique identifier of a task"),
-                "task": fields.String(required=True, description="The task details"),
-                "completed": fields.Boolean(description="Task completion status"),
-                "created_at": fields.DateTime(readOnly=True, description="The creation timestamp"),
-                "modified_at": fields.DateTime(
-                    readOnly=True, description="The last modified timestamp"
-                ),
-                "completed_at": fields.DateTime(description="The completion timestamp"),
-            },
+    def field_descriptions(cls) -> Iterable[tuple[str, Any]]:
+        """Todo fields metadata."""
+        return (
+            ("task", String(required=True, description="The task details")),
+            ("completed", Boolean(description="Task completion status")),
+            ("completed_at", DateTime(description="The completion timestamp")),
+            *super().field_descriptions(),
         )
 
     @override
     def update(self, commit: bool = True, **kwargs: DataBasePrimitives) -> Self:
-        """Update specific fields of todo."""
+        """Update specific todo fields."""
         if "completed" in kwargs and kwargs["completed"]:
             kwargs.setdefault("completed_at", datetime.now(UTC))
         return super().update(commit, **kwargs)

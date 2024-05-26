@@ -1,4 +1,3 @@
-from flask_restx import Namespace
 from flask_sqlalchemy.session import Session
 
 from mjv_todo_api.apis.todo.models import Todo
@@ -34,13 +33,8 @@ def test_create_todo_model(session: Session) -> None:
     assert todo.completed_at is None
 
 
-def test_rest_specification() -> None:
-    ns = Namespace("test")
-    spec = Todo.rest_specification(ns)
-    assert isinstance(spec, dict)
-    assert "id" in spec
+def test_field_descriptions() -> None:
+    spec = dict(Todo.field_descriptions())
     assert "task" in spec
     assert "completed" in spec
-    assert "created_at" in spec
-    assert "modified_at" in spec
     assert "completed_at" in spec

@@ -1,11 +1,10 @@
 """Database module, including the SQLAlchemy database object and DB-related utilities."""
 
-from datetime import datetime
-from typing import Any, Self, TypeAlias
+from datetime import UTC, datetime
+from typing import Any, Iterable, Self, TypeAlias
 
 import sqlalchemy
-from flask_restx import Model as APIModel
-from flask_restx import Namespace, OrderedModel
+from flask_restx.fields import DateTime, Integer
 
 from .extensions import db
 
@@ -60,11 +59,17 @@ class PkModel(Model):
 
     __abstract__ = True
     id = Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now(UTC))
+    modified_at = db.Column(db.DateTime, default=datetime.now(UTC), onupdate=datetime.now(UTC))
 
     @classmethod
-    def rest_specification(cls, namespace: Namespace) -> APIModel | OrderedModel:
-        """REST Swagger Specification."""
-        raise NotImplementedError
+    def field_descriptions(cls) -> Iterable[tuple[str, Any]]:
+        """Model fields metadata."""
+        return (
+            ("id", Integer(readOnly=True, description="The unique identifier")),
+            ("created_at", DateTime(readOnly=True, description="The creation timestamp")),
+            ("modified_at", DateTime(readOnly=True, description="The last modified timestamp")),
+        )
 
     @classmethod
     def get_by_id(cls, record_id: str | bytes | int | float) -> Self | None:  # type: ignore

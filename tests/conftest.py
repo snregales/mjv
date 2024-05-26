@@ -20,6 +20,7 @@ class TestConfig:
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     TESTING = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_SECRET_KEY = "not-so-secret"
 
 
 class CRUDMixinModel(Model):
@@ -51,11 +52,7 @@ def pk_model() -> type[PkModel]:
 
 @pytest.fixture(scope="module")
 def app() -> Iterator[Flask]:
-    """Fixture to create and configure the Flask app.
-
-    Returns:
-        Flask: The Flask application instance.
-    """
+    """Fixture to create and configure the Flask app."""
     app = create_app(TestConfig)
     with app.app_context():
         db.create_all()
@@ -65,27 +62,13 @@ def app() -> Iterator[Flask]:
 
 @pytest.fixture(scope="module")
 def client(app: Flask) -> FlaskClient:
-    """Fixture to provide a test client for the app.
-
-    Args:
-        app (Flask): The Flask application instance.
-
-    Returns:
-        FlaskClient: The test client for the Flask application.
-    """
+    """Fixture to provide a test client for the app."""
     return app.test_client()
 
 
 @pytest.fixture
 def session(app: Flask) -> Iterator[Session]:
-    """Fixture to handle database session with automatic rollback after each test.
-
-    Args:
-        app (Flask): The Flask application instance.
-
-    Yields:
-        Session: The SQLAlchemy session instance.
-    """
+    """Fixture to handle database session with automatic rollback after each test."""
     with app.app_context():
         db.session.begin(nested=True)
         yield db.session  # type:ignore

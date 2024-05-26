@@ -3,7 +3,7 @@
 from flask import Flask
 
 from .apis.register import register_namespaces
-from .extensions import api, db
+from .extensions import api, bcrypt, db, jwt
 
 
 def create_app(config_object: str | object = "mjv_todo_api.settings") -> Flask:
@@ -24,3 +24,5 @@ def register_extensions(app: Flask) -> None:
     """Register Flask extensions."""
     db.init_app(app)
     api.init_app(app)
+    jwt.init_app(app)
+    bcrypt.init_app(app)

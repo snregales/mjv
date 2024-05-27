@@ -162,7 +162,8 @@ def docs_bulid(session: Session) -> None:
     """Build the documentation."""
     args = session.posargs or ["--clean", "--verbose"]
     session.install(".")
-    session.install("mkdocs", "mkdocs-material", "mkdocstrings[python]")
+    session.install("mkdocs", "mkdocs-material", "mkdocstrings[python]", "pdoc")
+    session.run("pdoc", "--docformat", "google", "--output-directory", "docs/references", "mjv")
     session.run("mkdocs", "build", *args)
 
 

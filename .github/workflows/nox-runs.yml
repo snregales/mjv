@@ -88,6 +88,10 @@ jobs:
           name: coverage-data
 
       - name: Run Nox
+        env:
+          DATABASE_URL: sqlite:////tmp/dev.db
+          SECRET_KEY: not_so_secret
+          JWT_SECRET_KEY: not_so_secret
         run: |
           nox --python=${{ matrix.python }}
 

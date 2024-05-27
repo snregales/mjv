@@ -5,8 +5,8 @@ from typing import Any, Iterable, Self, override
 
 from flask_restx.fields import Boolean, DateTime, Integer, String
 
-from mjv_todo_api.database import Column, DataBasePrimitives, PkModel, reference_col
-from mjv_todo_api.extensions import db
+from mjv.database import Column, DataBasePrimitives, PkModel, reference_col
+from mjv.extensions import db
 
 
 class Todo(PkModel):

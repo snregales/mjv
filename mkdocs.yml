@@ -1,9 +1,9 @@
 site_name: MJV TODO REST API
-repo_url: https://github.com/snregales/mjv-todo-api
+repo_url: https://github.com/snregales/mjv
 site_description: Ministerie van Justitie en Veiligheid TODO REST API Assesment
 site_author: Sharlon Regales
 edit_uri: edit/main/docs
-repo_name: snregales/mjv-todo-api
+repo_name: snregales/mjv
 
 nav:
   - Home: index.md
@@ -45,5 +45,5 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/snregales/mjv-todo-api/issues
+      link: https://github.com/snregales/mjv/issues
       name: Issue Tracker

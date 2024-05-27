@@ -1,6 +1,6 @@
 from flask import Flask
 
-from mjv_todo_api.extensions import api, db
+from mjv.extensions import api, db
 
 
 def test_app_factory(app: Flask) -> None:

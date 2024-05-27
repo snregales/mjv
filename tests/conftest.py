@@ -9,9 +9,9 @@ from flask import Flask
 from flask.testing import FlaskClient
 from sqlalchemy.orm.session import Session
 
-from mjv_todo_api.app import create_app
-from mjv_todo_api.database import Model, PkModel
-from mjv_todo_api.extensions import db
+from mjv.app import create_app
+from mjv.database import Model, PkModel
+from mjv.extensions import db
 
 
 class TestConfig:

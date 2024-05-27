@@ -6,7 +6,7 @@ from .apis.register import register_namespaces
 from .extensions import api, bcrypt, db, jwt
 
 
-def create_app(config_object: str | object = "mjv_todo_api.settings") -> Flask:
+def create_app(config_object: str | object = "mjv.settings") -> Flask:
     """Create application factory.
 
     As explained here: http://flask.pocoo.org/docs/patterns/appfactories/.

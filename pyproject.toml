@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "mjv-todo-api"
+name = "mjv"
 version = "0.1.0"
 description = "Ministerie van Justitie en Veiligheid TO-DO REST API Assignment"
 authors = ["Sharlon N. Regales <sharlonregales@gmail.com>"]
 maintainers = ["Sharlon N. Regales <sharlonregales@gmail.com>"]
 readme = "README.md"
-repository = "https://github.com/snregales/mjv-todo-api"
+repository = "https://github.com/snregales/mjv"
 classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.12",
@@ -41,7 +41,7 @@ pre-commit-hooks = "*"
 ipykernel = "*"
 
 [tool.poetry.scripts]
-mjv = 'mjv_todo_api.__main__:run'
+mjv-run = 'mjv.__main__:run'
 
 [tool.pytest.ini_options]  # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
 addopts = "--color=yes --failed-first --strict-config --strict-markers --verbosity=2 --junitxml=reports/pytest.xml"
@@ -58,7 +58,7 @@ branch = true
 parallel = true
 command_line = "--module pytest"
 data_file = "reports/.coverage"
-source = ["mjv-todo-api", "tests"]
+source = ["src", "tests"]
 
 [tool.coverage.xml]  # https://coverage.readthedocs.io/en/latest/config.html#xml
 output = "reports/coverage.xml"

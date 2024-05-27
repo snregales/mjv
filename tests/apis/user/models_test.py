@@ -1,4 +1,4 @@
-from mjv_todo_api.apis.user.models import User
+from mjv.apis.user.models import User
 
 
 def test_create_user(new_user: User) -> None:

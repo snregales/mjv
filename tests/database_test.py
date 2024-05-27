@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy.orm.session import Session
 
-from mjv_todo_api.database import PkModel
+from mjv.database import PkModel
 
 # Did not go any deeper in testing database like checking unhappy paths like:
 # id not found

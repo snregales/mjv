@@ -2,7 +2,7 @@
 
 from click.testing import CliRunner
 
-from mjv_todo_api import __main__
+from mjv import __main__
 
 
 def test_cli_run_help(runner: CliRunner) -> None:

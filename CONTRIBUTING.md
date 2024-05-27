@@ -12,9 +12,9 @@ Here is a list of important resources for contributors:
 - [Code of Conduct]
 
 [mit license]: https://opensource.org/licenses/MIT
-[source code]: https://github.com/snregales/mjv-todo-api
-[documentation]: https://mjv-todo-api.readthedocs.io/
-[issue tracker]: https://github.com/snregales/mjv-todo-api/issues
+[source code]: https://github.com/snregales/mjv
+[documentation]: https://snregales.github.io/mjv/
+[issue tracker]: https://github.com/snregales/mjv/issues
 
 ## How to set up your development environment
 

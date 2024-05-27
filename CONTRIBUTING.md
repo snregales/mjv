@@ -35,7 +35,7 @@ or the command-line interface:
 
 ```bash
 poetry run python
-poetry run mjv-todo-api
+poetry run mjv-run
 ```
 
 [poetry]: https://python-poetry.org/

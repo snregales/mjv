@@ -4,8 +4,8 @@ from typing import Any, Iterable, Self, override
 
 from flask_restx.fields import String
 
-from mjv_todo_api.database import Column, DataBasePrimitives, PkModel
-from mjv_todo_api.extensions import bcrypt, db
+from mjv.database import Column, DataBasePrimitives, PkModel
+from mjv.extensions import bcrypt, db
 
 
 def _encrypt_password(

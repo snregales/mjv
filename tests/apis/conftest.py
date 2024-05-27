@@ -5,7 +5,7 @@ from flask import Flask
 from flask.testing import FlaskClient
 from flask_jwt_extended import create_access_token
 
-from mjv_todo_api.apis.user.models import User
+from mjv.apis.user.models import User
 
 
 @pytest.fixture(scope="module")

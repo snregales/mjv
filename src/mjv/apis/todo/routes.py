@@ -6,7 +6,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restx import Resource
 from flask_restx._http import HTTPStatus
 
-from mjv_todo_api.extensions import api
+from mjv.extensions import api
 
 from .models import Todo
 from .parsers import todo_parser

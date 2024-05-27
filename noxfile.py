@@ -20,7 +20,7 @@ except ImportError:
     raise SystemExit(dedent(message)) from None
 
 
-package = "mjv_todo_api"
+package = "mjv"
 python_versions = ["3.12"]
 nox.needs_version = ">= 2024.04.15"
 nox.options.sessions = (
@@ -136,7 +136,6 @@ def tests(session: Session) -> None:
     session.install(".")
     session.install("coverage[toml]", "pytest", "pygments")
     session.run("coverage", "run", *session.posargs)
-    session.notify("coverage", posargs=["debug", "config"])
 
 
 @session(python=python_versions[0])

@@ -1,6 +1,6 @@
 """Register all publically exposed namespace."""
 
-from mjv_todo_api.extensions import api
+from mjv.extensions import api
 
 from .todo.routes import ns as todo
 from .user.routes import ns as auth

@@ -19,4 +19,4 @@ def run(host: str, port: int, debug: bool) -> None:
 
 
 if __name__ == "__main__":
-    run(prog_name="mjv-todo-api")  # pragma: no cover
+    run(prog_name="mjv")  # pragma: no cover

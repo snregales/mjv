@@ -1,8 +1,8 @@
 import pytest
 
-from mjv_todo_api.apis.todo.models import Todo
-from mjv_todo_api.apis.user.models import User
-from mjv_todo_api.database import PkModel
+from mjv.apis.todo.models import Todo
+from mjv.apis.user.models import User
+from mjv.database import PkModel
 
 
 # No need to create more CRUD tests, thats already done

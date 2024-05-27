@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from flask.testing import FlaskClient
 
-from mjv_todo_api.apis.user.models import User
+from mjv.apis.user.models import User
 
 
 def test_register_existing_user(client: FlaskClient, new_user: User) -> None:

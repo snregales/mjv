@@ -19,7 +19,7 @@ todo_model = ns.model(
     {
         key: value
         for key, value in Todo.field_descriptions()
-        if key in ("id", "task", "completed", "completed_at")
+        if key in ("id", "task", "completed", "completed_at", "user_id")
     },
 )
 
